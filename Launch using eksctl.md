@@ -73,9 +73,9 @@ ip-192-168-76-117.us-west-2.compute.internal   Ready    <none>   16m   v1.13.7-e
 ````
 Export the Worker Role Name for use throughout the workshop
 ````
-STACK_NAME=$(eksctl get nodegroup --cluster eksworkshop-eksctl -o json | jq -r '.[].StackName')
-INSTANCE_PROFILE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK_NAME | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="InstanceProfileARN") | .OutputValue')
-ROLE_NAME=$(aws cloudformation describe-stacks --stack-name $STACK_NAME | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="InstanceRoleARN") | .OutputValue' | cut -f2 -d/)
+STACK_NAME=$(eksctl get nodegroup --profile vma --cluster eksworkshop-eksctl -o json | jq -r '.[].StackName')
+INSTANCE_PROFILE_ARN=$(aws cloudformation --profile vma describe-stacks --stack-name $STACK_NAME | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="InstanceProfileARN") | .OutputValue')
+ROLE_NAME=$(aws cloudformation describe-stacks --profile vma --stack-name $STACK_NAME | jq -r '.Stacks[].Outputs[] | select(.OutputKey=="InstanceRoleARN") | .OutputValue' | cut -f2 -d/)
 echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
 echo "export INSTANCE_PROFILE_ARN=${INSTANCE_PROFILE_ARN}" >> ~/.bash_profile
 ````
