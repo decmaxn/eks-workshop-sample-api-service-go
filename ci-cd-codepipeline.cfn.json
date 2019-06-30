@@ -1,0 +1,30 @@
+[
+  {
+    "ParameterKey": "GitHubUser",
+    "ParameterValue": "decmaxn"
+  }, 
+  {
+    "ParameterKey": "GitHubToken",
+    "ParameterValue": "6583651a2d4f4a3931befa815760f01e53f39348"
+  },
+  {
+    "ParameterKey": "GitSourceRepo",
+    "ParameterValue": "eks-workshop-sample-api-service-go"
+  }, 
+  {
+    "ParameterKey": "GitBranch",
+    "ParameterValue": "master"
+  },
+  {
+    "ParameterKey": "CodeBuildDockerImage",
+    "ParameterValue": "aws/codebuild/docker:17.09.0"
+  },
+  {
+    "ParameterKey": "KubectlRoleName",
+    "ParameterValue": "EksWorkshopCodeBuildKubectlRole"
+  }, 
+  {
+    "ParameterKey": "EksClusterName",
+    "ParameterValue": "eksworkshop-eksctl"
+  }, 
+]
