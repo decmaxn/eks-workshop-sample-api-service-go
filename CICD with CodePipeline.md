@@ -218,3 +218,52 @@ Once the service is built and delivered, we can run the following command to get
  kubectl get services hello-k8s -o wide
 ```
 This service was configured with a LoadBalancer so, an AWS Elastic Load Balancer is launched by Kubernetes for the service. The EXTERNAL-IP column contains a value that ends with “elb.amazonaws.com” - the full value is the DNS address.
+
+# Trigger New Release
+## Update Our Application
+
+So far we have walked through setting up CI/CD for EKS using AWS CodePipeline and now we are going to make a change to the GitHub repository so that we can see a new release built and delivered.
+
+Open GitHub and select the forked repository with the name eks-workshop-sample-api-service-go.
+
+Click on main.go file and then click on the edit button, which looks like a pencil.
+
+[GitHub Edit picture]
+
+Change the text where it says “Hello World”, add a commit message and then click the “Commit changes” button.
+
+You should leave the master branch selected.
+
+The main.go application needs to be compiled, so please ensure that you don’t accidentally break the build :)
+
+[GitHub Modify picture]
+
+After you modify and commit your change in GitHub, in approximately one minute you will see a new build triggered in the AWS Management Console CodePipeline Running
+## Confirm the Change
+
+If you still have the ELB URL open in your browser, refresh to confirm the update. If you need to retrieve the URL again, use kubectl get services hello-k8s -o wide
+
+# Cleanup
+
+Congratulations on completing the CI/CD with CodePipeline module.
+
+This module is not used in subsequent steps, so you can remove the resources now, or at the end of the workshop.
+
+First we need to delete the Kubernetes deployment and service:
+```
+kubectl delete deployments hello-k8s
+kubectl delete services hello-k8s
+```
+Next, we are going to delete the CloudFormation stack created. Open CloudFormation the AWS Management Console.
+
+Check the box next to the eksws-codepipeline stack, select the Actions dropdown menu and then click Delete stack:
+
+[CloudFormation Delete picture]
+
+Now we are going to delete the ECR repository:
+
+[ECR Delete picture]
+
+Empty and then delete the S3 bucket used by CodeBuild for build artifacts (bucket name starts with eksws-codepipeline). First, select the bucket, then empty the bucket and finally delete the bucket:
+
+[S3 Delete picture]
