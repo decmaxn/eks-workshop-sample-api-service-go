@@ -16,13 +16,14 @@ a [LoadBalancer](https://kubernetes.io/docs/tasks/access-application-cluster/cre
 to launch an external load balancer using an [AWS ELB](https://aws.amazon.com/elasticloadbalancing/).
 
 # Another eksworkshop
-Accidentally find with introduction.html following the eksworkshop website, like https://eksworkshop.com/introduction.html, actually lead to a difficult workshop. 
-```
-    Built EKS using a partner provided tool called eksctl
-    Built EKS using a community contributed terraform module
-    Built EKS using the recommended steps from AWS
-    Deployed the Kubernetes Dashboard
-```
-The difference is it introduces how to use terraform or Cloudformation to create EKS cluster instead reply on eksctl. Maybe this is an older version, but definitly helpful to understand the cluster. 
+Accidentally find with introduction.html following the eksworkshop website, like https://eksworkshop.com/introduction.html, actually lead to a difficult workshop.
 
-Refer to Terraform.md and Cloudformation.md for details.
+It too has a repo, https://github.com/mandusm/howto-launch-eks-workshop.git  Refer to howto-launch-eks-workshop folder 
+```
+# howto-launch-eks-workshop
+This workshop shows you the different ways of launching an Amazon EKS cluster.
+```
+The difference is it introduces how to use terraform or Cloudformation plus awscli to create EKS cluster instead reply on eksctl. Maybe this is an older version, but definitly helpful to understand the cluster. 
+
+Refer to Terraform.md and terraform-aws-eks folder. 
+

@@ -1,0 +1,19 @@
+= Getting Ready for this Lab
+:imagesdir: ../../img
+
+==== Prerequisites
+In order to complete this lab you will require at least the following tools.
+
+* AWS Account
+** This account must have the ability to create new IAM roles and scope other IAM permissions.
+
+==== Create a cloud9 environment in your account:
+
+image::c9-create.gif[]
+
+==== Allow Cloud 9 Proper IAM permissions
+
+image::c9-iam.gif[]
+
+==== Next Module
+Now that you can do some basic tasks with your aws cli, we can move on to the next module where we will set up the IAM roles and permissions you will need to launch an EKS cluster.

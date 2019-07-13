@@ -1,0 +1,123 @@
+= Cluster workers
+
+==== Prerequisites
+In order to complete this lab you will require at least the following tools.
+
+* AWS Account
+* AWS CLI
+* KubeCTL
+* Heptio Authenticator
+
+==== Launch the Worker Template
+Now that your VPC and Kubernetes control plane are created, you can launch and configure your worker nodes. We will now use CloudFormation to launch worker nodes that will connect to the EKS cluster.
+
+[source,bash]
+----
+aws cloudformation create-stack \
+--stack-name "eks-howto-workshop-worker-nodes" \
+--template-url "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/amazon-eks-nodegroup.yaml" \
+--capabilities CAPABILITY_IAM \
+--parameters ParameterKey=KeyName,ParameterValue=<your-ec2-key> \
+ParameterKey=NodeImageId,ParameterValue=ami-73a6e20b \
+ParameterKey=ClusterName,ParameterValue="eks-launch-workshop" \
+ParameterKey=NodeGroupName,ParameterValue="eks-howto-workers" \
+ParameterKey=ClusterControlPlaneSecurityGroup,ParameterValue=<your-security-group> \
+ParameterKey=VpcId,ParameterValue=<your-vpc> \
+ParameterKey=Subnets,ParameterValue=\"<your-comma-delimited-subnet-list>\"
+----
+
+TIP: Remember to substitute the values indicated by `< >` with the outputs generated earlier in the workshop.
+
+==== Verify Stack
+We now need to verify the stack create status and get some additional output information to join the worker nodes to the cluster.
+
+[source,bash]
+----
+aws cloudformation describe-stacks --stack-name "eks-howto-workshop-worker-nodes" --query "Stacks[0].[StackStatus,Outputs]"
+----
+
+===== Expected Output
+
+[source,json]
+----
+[
+    "CREATE_COMPLETE",
+    [
+        {
+            "OutputKey": "NodeInstanceRole",
+            "OutputValue": "arn:aws:iam::<account-id>:role/eks-howto-workshop-worker-nodes-NodeInstanceRole-1OE271RG9YTPY",
+            "Description": "The node instance role"
+        }
+    ]
+]
+----
+
+==== Create Worker ConfigMap
+Using your favorite text editor, open the file found in the github repository at `assets/worker-configmap.yml`. Edit the `rolearn` value with the output generated above.
+
+===== For Example
+[source,yaml]
+----
+data:
+  mapRoles: |
+    - rolearn: "arn:aws:iam::<account-id>:role/eks-howto-workshop-worker-nodes-NodeInstanceRole-1OE271RG9YTPY"
+----
+
+==== Apply ConfigMap
+Apply the newly created ConfigMap
+
+[source,bash]
+----
+kubectl apply -f worker-configmap.yml
+----
+
+===== Expected Output
+[source,text]
+----
+configmap/aws-auth created
+----
+
+==== Get Node Status
+You should now see the status of your nodes as they become ready.
+
+[source,bash]
+----
+kubectl get nodes --watch
+----
+
+===== Expected Output
+[source,text]
+----
+NAME                                            STATUS    ROLES     AGE       VERSION
+ip-192-168-159-218.us-west-2.compute.internal   Ready     <none>    1m        v1.10.3
+ip-192-168-245-156.us-west-2.compute.internal   Ready     <none>    1m        v1.10.3
+ip-192-168-77-21.us-west-2.compute.internal     Ready     <none>    1m        v1.10.3
+----
+
+==== Congratulations!
+Congratulations. You now have a fully working Amazon EKS Cluster that is ready to use!
+
+==== Tear Down & Clean up.
+To clean up the resources in your AWS account that was created by this workshop. Run the following commands.
+
+[source,bash]
+----
+# Remove the Worker nodes from EKS.
+aws cloudformation delete-stack --stack-name "eks-howto-workshop-worker-nodes"
+
+# Delete the EKS Cluster
+aws eks delete-cluster --name "eks-launch-workshop"
+
+# Confirm the Cluster is deleted before removing Cluster VPC
+aws eks describe-cluster --name eks-launch-workshop --query "cluster.status"
+
+# Remove the Cluster VPC
+aws cloudformation delete-stack --stack-name "eks-howto-launch-workshop"
+
+# Detach IAM Policies from Role
+aws iam detach-role-policy --role-name "eks-service-role-workshop" --policy-arn "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+aws iam detach-role-policy --role-name "eks-service-role-workshop" --policy-arn "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+
+# Remove the IAM Role craeted for the EKS cluster.
+aws iam delete-role --role-name "eks-service-role-workshop"
+----

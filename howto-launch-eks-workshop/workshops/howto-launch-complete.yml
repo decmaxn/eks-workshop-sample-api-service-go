@@ -1,0 +1,20 @@
+---
+id: howto-launch-eks-2018
+name: Workshop
+workshop_title: "How to launch EKS Clusters"
+revision: nycsummit2018
+logo: "aws-smile.png"
+enable_issue_submission: false
+repo_url: https://github.com/mandusm/howto-launch-eks-workshop
+vars:
+  WORKSHOP_VERSION: v1.0
+modules:
+  activate:
+  - "modules_getting-started_Readme"
+  - "modules_iam-permissions_Readme"
+  - "modules_vpc-create_Readme"
+  - "modules_eks-tools_Readme"
+  - "modules_launch-eks-cluster_Readme"
+  - "modules_cluster-login_Readme"
+  - "modules_add-workers_Readme"
+  - "modules_terraform_Readme"
