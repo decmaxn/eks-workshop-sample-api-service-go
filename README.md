@@ -14,3 +14,15 @@ In the hello-k8s.yml file, you will find the Kubernetes [service](https://kubern
 [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) definitions. The service is configured with
 a [LoadBalancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) which prompts Kubernetes
 to launch an external load balancer using an [AWS ELB](https://aws.amazon.com/elasticloadbalancing/).
+
+# Another eksworkshop
+Accidentally find with introduction.html following the eksworkshop website, like https://eksworkshop.com/introduction.html, actually lead to a difficult workshop. 
+```
+    Built EKS using a partner provided tool called eksctl
+    Built EKS using a community contributed terraform module
+    Built EKS using the recommended steps from AWS
+    Deployed the Kubernetes Dashboard
+```
+The difference is it introduces how to use terraform or Cloudformation to create EKS cluster instead reply on eksctl. Maybe this is an older version, but definitly helpful to understand the cluster. 
+
+Refer to Terraform.md and Cloudformation.md for details.
